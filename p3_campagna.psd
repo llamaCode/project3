@@ -1,0 +1,416 @@
+//MARIA CAMPAGNA
+//CST 112 - PROFESSOR BAM!
+//HERO CHASES GOLD, DOGS FOLLOW, MONSTER CHASES - PROJECT 2
+float gx = 0, gn = 20;
+PImage photo;
+
+//RUNG ARRAY
+Rung[] rungs = new Rung[20];
+
+//EACH CLASS
+Gold gold; Sun sun; Dog maera; Monster wyvern; 
+Monkey kong; Ladder ladder; Bloog bloog; Birds flock;
+
+
+void setup() {
+  size (1000, 800);
+  smooth();
+
+  //INITIALIZING CLASSES
+  bloog = new Bloog(); gold = new Gold(); sun = new Sun(); maera = new Dog();
+  wyvern = new Monster(); kong = new Monkey(); ladder = new Ladder(); flock = new Birds();
+  
+  //SETTING UP LOOP FOR RUNGS
+  for (int i = 10; i < rungs.length; i+=3) {
+    rungs[i] = new Rung(color(255), i*2);
+  }
+}
+
+//CALLING THE SCENE
+void draw() {
+  //SKY COLOR
+  background(103, 227, 248);
+  
+  //SETTING THE SCENE AND ALL ACTION
+  scene();
+  action();
+
+  //DRAWING EACH CLASS
+  gold.create(); sun.create(); maera.create(); wyvern.create(); bloog.create(); flock.bird();
+  
+  //MAKING THE LADDER RUNGS
+  for (int i = 10; i < rungs.length; i+=3) {
+    rungs[i].display();
+  }
+  //DRAWING THE LADDER & MONKEY IN FRONT
+  ladder.create(); kong.create();
+
+  messages();
+  
+  //LOADING BANANA PHOTO
+  photo = loadImage("banana.png");
+  photo.resize(0, 75);
+  image(photo, 800, 0);
+}
+ //SETTING UP KEYPRESSES
+void keyPressed() {
+  if (key == 'q' || key == 'Q') exit(); //QUIT
+}
+
+void action() {
+  //ANIMATING EACH CLASS
+  sun.move(); bloog.move(); maera.move(); wyvern.move(); kong.move();
+}
+
+//SETTING THE SCENE
+void scene() {
+  
+  for (int i = 0; i < 1000; i = i+10) {
+    fill(0);
+  line(i, 100, 800, i);
+}
+
+  //GRASS
+  //for (int i = 1.78; i < 40; i = i-20) {
+  noStroke();
+  rectMode(CORNER);
+  fill(181, 185, 72);
+  rect(0, height/1.78, width, height*3/4);
+  if (frameCount%60 == 0) gn = random(15, 25);
+  for (gx =-gn; gx<width+gn; gx+=gn) {
+    ellipse(gx, height/1.78, gn, gn);
+  //}
+  }
+
+  //HOUSE
+  fill(214, 59, 26);
+  rect(100, 400, 200, 100 );
+  fill(102, 39, 0);  
+  triangle( 100, 400, 300, 400, 200, 300 );
+
+  //ROOF
+  fill(0);
+  rect(175, 450, 50, 50);
+  rect(120, 410, 40, 40);
+  rect(240, 410, 40, 40);
+
+  //TREE #1
+  fill(94, 64, 38);
+  rect(600, 410, 30, 100);
+  fill(110, 121, 0);
+  ellipse(615, 380, 150, 150);
+
+  //TREE #2
+  fill(86, 56, 18);
+  rect(425, 450, 30, 75);
+  fill(97, 116, 0);
+  ellipse(440, 425, 100, 100);
+
+  fill(181, 175, 0);
+  rect(0, height/1.58, width, height*3/4);
+  if (frameCount%60 == 0) gn = random(15, 25);
+  for (gx =-gn; gx<width+gn; gx+=gn) {
+    ellipse(gx, height/1.58, gn, gn);
+  }
+
+  //TREE #3
+  fill(127, 99, 52);
+  rect(500, 475, 30, 100);
+  fill(149, 168, 16);
+  ellipse(515, 450, 120, 120);
+
+  fill(181, 185, 72);
+  rect(0, height/1.38, width, height*3/4);
+  if (frameCount%60 == 0) gn = random(15, 25);
+  for (gx =-gn; gx<width+gn; gx+=gn) {
+    ellipse(gx, height/1.38, gn, gn);
+  }
+
+  fill(181, 175, 0);
+  rect(0, height/1.18, width, height*3/4);
+  if (frameCount%60 == 0) gn = random(15, 25);
+  for (gx =-gn; gx<width+gn; gx+=gn) {
+    ellipse(gx, height/1.18, gn, gn);
+  }
+
+  //CLOUDS
+  fill(255);
+  ellipse(100, 100, 200, 60);
+  ellipse(100, 90, 100, 60);
+}
+
+class Monkey {
+  float x, y, w, h;
+
+  Monkey() {
+    x = 805;
+    y = 500;
+    w = 70;
+    h = 120;
+  }
+
+  void create() {
+    noStroke();
+    fill(115, 77, 38);
+    ellipse(x, y-85, w, h-50);
+    ellipse(x, y, w, h);
+  }
+
+  void move() {
+    if ( key == 'u' | key == 'U') {
+      y = y - 1;
+    }
+    if (key == 'd' | key == 'D') {
+      y = y + 1;
+    }
+  }
+}
+
+class Ladder {
+  float x, y, w, h;
+
+  Ladder() {
+    x = 855;
+    y = 0;
+    w = 15;
+    h = height*2;
+  }
+
+  void create() {
+    fill(67, 39, 0);
+    rect(x, y, w, h);
+    rect(x-100, y, w, h);
+  }
+}
+
+class Rung {
+  float x, y, w, h;
+  color c;
+
+  Rung(color c_, float ypos_) {
+    c = c_;
+    y = ypos_;
+    w = 20;
+    h = 20;
+  }
+
+  void display() {
+    fill(67, 39, 0);
+    for (int i = 0; i<50; i+= 1) { 
+      rect(800, i*60, 100, 5, 70);
+    }
+  }
+}
+
+class Sun {
+  float x, y, w, h;
+
+  Sun() {
+    x = 0;
+    y = 10;
+    w = 120;
+    h = 120;
+  }
+
+  void create() {
+    noStroke();
+    fill(255, 255, 0);
+    ellipse(x, y, 120, 120);
+  }
+
+  void move() {
+    //MOVING THE SUN ACROSS THE SKY
+    if (x > width) {
+      x = 0;
+      y = random(40, 200);
+    }
+    x = x+1;
+  }
+}
+
+class Birds {
+  float x, y, w, h;
+  float each;
+
+  Birds() {
+    each=  int( random(3, 6) );
+    x=random(w/2);
+    y=random( 40, height/4 );
+    w=random(10, 50);
+    h=random(10, 50);
+  }
+
+  void bird() {
+    triangle(x, y, x-w, y-h/2, x-w, y+h/2);
+  }
+}
+
+//BUILDING BLOOG
+class Bloog {
+  float x, y, w, h;
+  float c;
+  int counter = 0;
+
+  Bloog () {
+    w = 60;
+    h = 60;
+    x = width/2;
+    y = 500;
+
+    c = 0;
+  }
+
+  void create() {
+    rectMode(CENTER);
+
+    //BODY
+    fill(c+128, c+75, c+23);
+    rect(x, y, w-30, h+40);
+    fill(c+181, c+118, c+54);
+    rect(x, y, w-30, h-10);
+    fill(c);
+    text("JAY", x-13, y+10);
+    text("VAH", x-13, y+20);
+
+    //HEAD
+    fill(c+247, c+220, c+193);
+    ellipse(x, y-30, w, h);
+
+    //EYES
+    fill(c);
+    ellipse(x-19, y-30, w-44, h-44);
+    ellipse(x+19, y-30, w-44, h-44);
+
+    //LEGS
+    stroke(c);
+    line(x-10, y+50, x-10, y+100);
+    line(x+10, y+50, x+10, y+100);
+  }
+
+  void move() {
+    bloog.x=  bloog.x  +  (gold.x-bloog.x) / 50;    //BLOOG MOVES TOWARD THE GOLD
+    bloog.y=  bloog.y  +  (gold.y-bloog.y) / 50;
+
+    if (bloog.x > width) {
+      bloog.x = 0;
+      bloog.y = random(0, 800);
+    }
+
+    if (dist(bloog.x, bloog.y, gold.x, gold.y) < 50) { 
+      gold.x = random(0, 800);
+      gold.y = random(600, 800);
+      {
+        counter = counter + 100;
+      }
+    }
+  }
+}
+
+//CLASS OF GOLD
+class Gold {
+  float x, y, w, h;
+  float c;
+
+  Gold() {
+    x = width/4;
+    y = 600;
+    w = 20;
+    h = 30;
+
+    c = 255;
+  }
+
+  void create() {
+    noStroke();
+    fill(c, c, c-255);
+    ellipse(x, y, w, h);
+  }
+}
+
+//CLASS DOG NAMED MAERA
+class Dog {
+  float x, y, w, h;
+
+  Dog() {
+    x = width/2;
+    y = 500;
+    w = 100;
+    h = 100;
+  }
+
+  void create() {
+    fill(205, 149, 2);
+    ellipse(x, y, w, h);
+  }
+
+  void move() {
+    maera.x =  maera.x  +  (bloog.x - maera.x)/200 ;    //DOG MOVES WITH BLOOG
+    maera.y =  maera.y  +  (bloog.y - maera.y)/200 ;
+
+    if (maera.x > width) {
+      maera.x = 0;
+      maera.y = random(0, 800);
+    }
+  }
+}
+
+//CLASS MONSTER NAMED WYVERN
+class Monster {
+  float x, y, w, h;
+  float c;
+  int counter = 0;
+
+  Monster() {
+    x = 20;
+    y = 20;
+    w = 200;
+    h = 200;
+
+    c = 79;
+  }
+
+  void create() {
+    //BODY/MOUTH
+    fill(c, c, c);
+    ellipse(x, y, w, h);
+    fill(255);
+    ellipse(x, y-20, w-150, h-150);
+    
+    //EYES/SOCKETS
+    fill(c, c, c);
+    ellipse(x-50, y-100, w/3, h/3);
+    ellipse(x+50, y-100, w/3, h/3);
+    fill(219, 112, 147);
+    ellipse(x-50, y-100, w/4, h/4);
+    ellipse(x+50, y-100, w/6, h/6);
+    fill(0);
+    ellipse(x-50, y-100, w/6, h/6);
+    ellipse(x+50, y-100, w/9, h/9);
+  }
+
+  void move() {
+    wyvern.x =  wyvern.x  +  (maera.x - wyvern.x)/200 ;    //MONSTER CHASES DOG
+    wyvern.y =  wyvern.y  +  (maera.y - wyvern.y)/200 ;
+
+    if (wyvern.x > width) {
+      wyvern.x = 0;
+      wyvern.y = random(0, 800);
+    }
+    if (dist(wyvern.x, wyvern.y, bloog.x, bloog.y) < 20) { 
+      bloog.x = random(0, 800);
+      bloog.y = random(600, 800);
+      {
+        counter = counter + 100; //IF THE MONSTER IS NEAR BLOOG + 100 FOR MONSTER
+        bloog.counter = bloog.counter - 100; //BLOOG ALSO LOSES 100 POINTS
+      }
+    }
+  }
+}
+void messages() {
+  fill(0);
+  text( "Hero Chases Gold, Dog Chases Hero, Monster Stalks Hero", 10, 20);
+  text( "By Maria Campagna", 10, 40);
+  text( "CST 112 - Introduction to Programming", 10, 60);
+  text(bloog.counter, width-50, 20);
+  text(wyvern.counter, width-50, 40);
+}
